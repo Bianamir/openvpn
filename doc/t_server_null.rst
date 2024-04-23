@@ -40,7 +40,7 @@ Running the test suite requires the following:
 * root-level privileges for launching the servers
 
   * run as root
-  * ability to sudo as root
+  * a privilege escalation tool (sudo, doas, su) and the permission to become root
 
 Technical implementation
 ------------------------
@@ -134,8 +134,13 @@ To follow the test flow on Linux you can run this while stress-testing::
 Regarding privilege escalation
 ------------------------------
 
-Very long test suites should run as the root user to avoid sudo authorizations
-from timing out and causing test failures. This is particularly useful when
-stress-testing the test suite, because in that use-case sudo is called on every
-make check invocation and when the authorization expires tests will start
-failing.
+The --dev null test servers need to be launched as root. Either run the tests
+as root directly, or configure a privilege escalation tool of your choice in
+*t_server_null.rc*. For example, to use sudo::
+
+    SUDO_EXEC=`which sudo`
+    RUN_SUDO="${SUDO_EXEC} -E"
+
+If you do stress-testing with *t_server_null_stress.sh* make sure your
+privilege escalation authorization does not time out: if it does, then a
+reauthorization prompt will interrupt your tests.

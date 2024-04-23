@@ -1,3 +1,7 @@
+# Uncomment to run tests with sudo
+#SUDO_EXEC=`which sudo`
+#RUN_SUDO="${SUDO_EXEC} -E"
+
 TEST_RUN_LIST="1 2 3 10 11"
 
 TEST_NAME_10="t_server_null_client.sh-openvpn_2_6_8_udp"
