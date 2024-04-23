@@ -33,22 +33,14 @@ do
     launch_server "${server_name}" "${server_exec}" "${server_conf}"
 done
 
-# Create a list of all applicable client pid files. It allows checking "global"
-# status of client connections to the --dev null test servers as a whole.
+# Create a list of server pid files so that servers can be killed at the end of
+# the test run.
 #
-# Also create a list of server management ports which is used to kill the
-# servers gracefully using the management interface once all clients have
-# disconnected.
-#
-export pid_files=""
-export mgmt_ports=""
+export server_pid_files=""
 for SUF in $TEST_SERVER_LIST
 do
     eval server_name=\"\$SERVER_NAME_$SUF\"
-    eval mgmt_port=\"\$SERVER_MGMT_PORT_$SUF\"
-
-    pid_files="${pid_files} ${srcdir}/${server_name}.pid"
-    mgmt_ports="${mgmt_ports} ${mgmt_port}"
+    server_pid_files="${server_pid_files} ${srcdir}/${server_name}.pid"
 done
 
 # Wait until clients are no more, based on the presence of their pid files.
@@ -69,7 +61,7 @@ done
 
 echo "All clients have disconnected from all servers"
 
-for MGMT_PORT in $mgmt_ports
+for PID_FILE in $server_pid_files
 do
-    echo "signal SIGTERM"|nc 127.0.0.1 $MGMT_PORT
+    kill `cat $PID_FILE`
 done

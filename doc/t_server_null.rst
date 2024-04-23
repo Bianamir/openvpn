@@ -37,7 +37,6 @@ Prerequisites
 Running the test suite requires the following:
 
 * *bash* for running the tests
-* *nc* binary (used to drive the management interface)
 * root-level privileges for launching the servers
 
   * run as root
