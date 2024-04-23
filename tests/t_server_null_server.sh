@@ -63,5 +63,5 @@ echo "All clients have disconnected from all servers"
 
 for PID_FILE in $server_pid_files
 do
-    kill `cat $PID_FILE`
+    $KILL_EXEC `cat $PID_FILE`
 done

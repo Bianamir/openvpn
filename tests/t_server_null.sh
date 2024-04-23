@@ -7,6 +7,13 @@ if ! [ -r "./t_server_null.rc" ] ; then
     exit "${TSERVER_NULL_SKIP_RC}"
 fi
 
+export KILL_EXEC=`which kill`
+if [ $? -ne 0 ]; then
+    echo "$0: kill not found in \$PATH" >&2
+    exit "${TSERVER_NULL_SKIP_RC}"
+fi
+
+
 if [ `id -un` == "root" ]; then
     use_sudo="no"
 else
